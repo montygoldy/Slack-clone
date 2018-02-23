@@ -1,6 +1,5 @@
 export default `
-
-  type Team{
+   type Team{
     owner: User!
     members: [User!]!
     channels: [Channel!]!
@@ -28,8 +27,4 @@ export default `
     team: [Team!]!
 
   }
-
-  type Query {
-    hi: String
-  }
-`
+`;
