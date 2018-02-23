@@ -4,6 +4,7 @@ import { graphqlExpress, graphiqlExpress } from 'apollo-server-express';
 import { makeExecutableSchema } from 'graphql-tools';
 import path from 'path';
 import { fileLoader, mergeTypes, mergeResolvers } from 'merge-graphql-schemas';
+import cors from 'cors';
 import models from './models';
 
 // Defining a type array and feeding the schema folder
@@ -23,6 +24,7 @@ const schema = makeExecutableSchema({
 
 const PORT = 8080;
 const app = express();
+app.use(cors('*'));
 const graphqlEndpount = '/graphql'
 app.use(graphqlEndpount, bodyParser.json(), graphqlExpress({ schema, context: {
   models,

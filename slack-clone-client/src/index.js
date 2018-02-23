@@ -8,14 +8,12 @@ import Routes from './routes'
 import registerServiceWorker from './registerServiceWorker';
 
 const client = new ApolloClient({
-  // By default, this client will send queries to the
-  //  `/graphql` endpoint on the same host
-  link: new HttpLink(),
-  cache: new InMemoryCache()
+  link: createHttpLink({ uri: 'http://localhost:8080/graphql' }),
+  cache: new InMemoryCache(),
 });
 
 const App = (
-  <ApolloProvider>
+  <ApolloProvider client={client}>
     <Routes />
   </ApolloProvider>
 )
