@@ -20,7 +20,15 @@ export default (sequelize, DataTypes) => {
         name: 'userId',
         field: 'user_id',
       }
-    })
+    });
+    // N to M relationship for private members of channel
+    User.belongsToMany(models.Channel, {
+      through: 'channel_member',
+      foreignKey: {
+        name: 'userId',
+        field: 'user_id',
+      }
+    });
   };
 
   return User;
