@@ -24,7 +24,9 @@ const schema = makeExecutableSchema({
 const PORT = 8080;
 const app = express();
 const graphqlEndpount = '/graphql'
-app.use(graphqlEndpount, bodyParser.json(), graphqlExpress({ schema }));
+app.use(graphqlEndpount, bodyParser.json(), graphqlExpress({ schema, context: {
+  models
+} }));
 app.use('/graphiql', graphiqlExpress({ endpointURL: graphqlEndpount }));
 // force: true in syn to drop the table
 models.sequelize.sync().then(() => {
