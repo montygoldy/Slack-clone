@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Header, Icon, Input, Button, Message } from 'semantic-ui-react'
+import { Container, Header, Icon, Input, Button, Message } from 'semantic-ui-react';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
