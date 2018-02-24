@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import _ from 'lodash';
-import tryLogin from '../auth';
+import { tryLogin } from '../auth';
 
 //For formatting the errors
 
