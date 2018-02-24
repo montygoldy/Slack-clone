@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
 import _ from 'lodash';
+import tryLogin from '../auth';
 
 //For formatting the errors
 
@@ -17,6 +18,8 @@ export default {
     allUsers: (parent, args, {models}) => models.User.findAll(),
   },
   Mutation: {
+    login: (parent, { email, password }, {models, SECRET, SECRET2}) =>  tryLogin(email, password, models, SECRET),
+
     register: async (parent, {password, ...otherArgs}, {models}) => {
       try{
         if(password.length > 6 || password.lenght < 100){

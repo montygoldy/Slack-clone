@@ -7,6 +7,11 @@ import { fileLoader, mergeTypes, mergeResolvers } from 'merge-graphql-schemas';
 import cors from 'cors';
 import models from './models';
 
+// Secret for hwt tokens
+
+const SECRET = 'thisisasecretkey';
+const SECRET2 = 'thisisasecondsecretkey';
+
 // Defining a type array and feeding the schema folder
 const types = fileLoader(path.join(__dirname, './schema'));
 const typeDefs = mergeTypes(types);
@@ -30,7 +35,9 @@ app.use(graphqlEndpount, bodyParser.json(), graphqlExpress({ schema, context: {
   models,
   user: {
     id: 1
-  }
+  },
+  SECRET,
+  SECRET2,
 } }));
 app.use('/graphiql', graphiqlExpress({ endpointURL: graphqlEndpount }));
 // force: true in syn to drop the table
