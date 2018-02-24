@@ -4,11 +4,14 @@ import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
 class Register extends React.Component{
-  state = {
-    username: "",
-    email: "",
-    password: "",
-  };
+  constructor(props){
+    super(props)
+    this.state = {
+      username: "",
+      email: "",
+      password: "",
+    };
+  }
 
   onSubmit = async (e) => {
     const res = await this.props.mutate({
