@@ -8,16 +8,29 @@ class Register extends React.Component{
     super(props)
     this.state = {
       username: "",
+      usernameError: "",
       email: "",
+      emailError: "",
       password: "",
+      passwordError:""
     };
   }
 
   onSubmit = async (e) => {
+    const { username, email, password } = this.state;
     const res = await this.props.mutate({
-      variables: this.state,
+      variables: { username, email, password },
     });
-
+    const { ok, errors } = res.data.register;
+    if(ok){
+      this.props.history.push('/');
+    } else{
+      const err = {};
+      errors.forEach(({path, message}) => {
+        err[`${path}Error`] = message;
+      });
+      this.setState(err);
+    }
     console.log(res);
   };
 
