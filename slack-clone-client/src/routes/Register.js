@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Header, Icon, Input, Button } from 'semantic-ui-react'
+import { Container, Header, Icon, Input, Button, Message } from 'semantic-ui-react'
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
@@ -17,6 +17,13 @@ class Register extends React.Component{
   }
 
   onSubmit = async (e) => {
+    // reset the ui field
+    this.setState({
+      usernameError: '',
+      emailError: '',
+      passwordError: ''
+    })
+
     const { username, email, password } = this.state;
     const res = await this.props.mutate({
       variables: { username, email, password },
@@ -42,19 +49,19 @@ class Register extends React.Component{
   }
 
   render(){
-    const { username, email, password } = this.state;
+    const { username, email, password, usernameError, emailError, passwordError } = this.state;
     return (
       <Container text>
         <Header as='h2'>Register</Header>
-        <Input name="username" onChange={this.onChange} value={username} fluid iconPosition='left' placeholder='Username'>
+        <Input error={!!usernameError} name="username" onChange={this.onChange} value={username} fluid iconPosition='left' placeholder='Username'>
           <Icon name='user' />
           <input />
         </Input>
-        <Input name="email" onChange={this.onChange}  value={email} fluid iconPosition='left' placeholder='Email' type="email">
+        <Input error={!!emailError} name="email" onChange={this.onChange}  value={email} fluid iconPosition='left' placeholder='Email' type="email">
           <Icon name='at' />
           <input />
         </Input>
-        <Input name="password" onChange={this.onChange} value={password} fluid iconPosition='left' placeholder='Password' type="password">
+        <Input error={!!passwordError} name="password" onChange={this.onChange} value={password} fluid iconPosition='left' placeholder='Password' type="password">
           <Icon name='privacy' />
           <input />
         </Input>
@@ -62,6 +69,16 @@ class Register extends React.Component{
           <Icon name='signup' />
           Register
         </Button>
+        {
+          (usernameError || emailError || passwordError) && (
+            <Message
+              error
+              header='There was some errors with your submission'
+              list={[usernameError, emailError, passwordError].filter(e => e)
+              }
+            />
+          )
+        }
       </Container>
     );
   }
