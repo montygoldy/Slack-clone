@@ -5,13 +5,12 @@ import { Container, Header, Icon, Input, Button, Form, Message } from 'semantic-
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
-class Login extends React.Component{
+class CreateTeam extends React.Component{
   constructor(props){
     super(props);
 
     extendObservable(this, {
       email: '',
-      password: '',
       errors: {}
     });
   }
@@ -45,29 +44,23 @@ class Login extends React.Component{
   }
 
   render(){
-    const { email, password, errors: { emailError, passwordError} } = this;
+    const { name, errors: { emailError} } = this;
     return (
       <Container text>
         <Form>
-          <Header as='h2'>Login</Header>
-          <Form.Field error={!!emailError}>
-            <Input name="email" onChange={this.onChange}  value={email} fluid iconPosition='left' placeholder='Email' type="email">
-              <Icon name='at' />
-              <input />
-            </Input>
-          </Form.Field>
-          <Form.Field error={!!passwordError}>
-            <Input name="password" onChange={this.onChange} value={password} fluid iconPosition='left' placeholder='Password' type="password">
-              <Icon name='privacy' />
+          <Header as='h2'>Create Team</Header>
+          <Form.Field error={!!nameError}>
+            <Input name="name" onChange={this.onChange}  value={name} fluid iconPosition='left' placeholder='Team Name' type="text">
+              <Icon name='users' />
               <input />
             </Input>
           </Form.Field>
           <Button icon onClick={this.onSubmit}>
-            <Icon name='sign in' /> Sign In
+            <Icon name='add user' /> Create Team
           </Button>
         </Form>
         {
-          (emailError || passwordError) && (
+          (nameError && (
             <Message
               error
               header='There was some errors with your submission'
@@ -81,7 +74,7 @@ class Login extends React.Component{
   }
 };
 
-const loginMutation = gql`
+const createTeamMutation = gql`
   mutation($email: String!, $password: String!){
     login(email: $email, password: $password){
       ok
@@ -95,6 +88,6 @@ const loginMutation = gql`
   }
 `;
 
-export default graphql(loginMutation)(observer(Login));
+export default graphql(createTeamMutation)(observer(CreateTeam));
 
 
