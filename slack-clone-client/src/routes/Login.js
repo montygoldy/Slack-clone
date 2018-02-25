@@ -2,6 +2,8 @@ import React from 'react';
 import { extendObservable } from 'mobx';
 import { observer } from 'mobx-react';
 import { Container, Header, Icon, Input, Button } from 'semantic-ui-react';
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
 
 class Login extends React.Component{
   constructor(props){
@@ -13,10 +15,19 @@ class Login extends React.Component{
     });
   }
 
-  onSubmit = () => {
+  onSubmit = async () => {
     const { email, password } = this;
-    console.log(email, password);
-  }
+    const res = await this.props.mutate({
+      variables: { email, password }
+    });
+
+    console.log(res);
+    const { ok, refreshToken, token } = res.data.login;
+    if(ok){
+      localStorage.setItem('token', token);
+      localStorage.setItem('refreshToken', refreshToken);
+    }
+  };
 
   onChange = (e) => {
     const { name, value } = e.target;
@@ -45,6 +56,20 @@ class Login extends React.Component{
   }
 };
 
-export default observer(Login);
+const loginMutation = gql`
+  mutation($email: String!, $password: String!){
+    login(email: $email, password: $password){
+      ok
+      token
+      refreshToken
+      errors{
+        path
+        message
+      }
+    }
+  }
+`;
+
+export default graphql(loginMutation)(observer(Login));
 
 
