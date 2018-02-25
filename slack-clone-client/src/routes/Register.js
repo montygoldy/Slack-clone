@@ -54,20 +54,20 @@ class Register extends React.Component{
       <Container text>
         <Header as='h2'>Register</Header>
         <Form>
-          <Form.Field>
-            <Input error={!!usernameError} name="username" onChange={this.onChange} value={username} fluid iconPosition='left' placeholder='Username'>
+          <Form.Field error={!!usernameError} >
+            <Input name="username" onChange={this.onChange} value={username} fluid iconPosition='left' placeholder='Username'>
               <Icon name='user' />
               <input />
             </Input>
           </Form.Field>
-          <Form.Field>
-            <Input error={!!emailError} name="email" onChange={this.onChange}  value={email} fluid iconPosition='left' placeholder='Email' type="email">
+          <Form.Field error={!!emailError} >
+            <Input name="email" onChange={this.onChange}  value={email} fluid iconPosition='left' placeholder='Email' type="email">
               <Icon name='at' />
               <input />
             </Input>
           </Form.Field>
-          <Form.Field>
-            <Input error={!!passwordError} name="password" onChange={this.onChange} value={password} fluid iconPosition='left' placeholder='Password' type="password">
+          <Form.Field error={!!passwordError}>
+            <Input name="password" onChange={this.onChange} value={password} fluid iconPosition='left' placeholder='Password' type="password">
               <Icon name='privacy' />
               <input />
             </Input>
@@ -75,17 +75,18 @@ class Register extends React.Component{
           <Button icon onClick={this.onSubmit}>
             <Icon name='signup' /> Register
           </Button>
-          {
-            (usernameError || emailError || passwordError) && (
-              <Message
-                error
-                header='There was some errors with your submission'
-                list={[usernameError, emailError, passwordError].filter(e => e)
-                }
-              />
-            )
-          }
         </Form>
+
+        {
+          (usernameError || emailError || passwordError) && (
+            <Message
+              error
+              header='There was some errors with your submission'
+              list={[usernameError, emailError, passwordError].filter(e => e)
+              }
+            />
+          )
+        }
       </Container>
     );
   }
