@@ -1,7 +1,7 @@
 import React from 'react';
 import { extendObservable } from 'mobx';
 import { observer } from 'mobx-react';
-import { Container, Header, Icon, Input, Button } from 'semantic-ui-react';
+import { Container, Header, Icon, Input, Button, Form } from 'semantic-ui-react';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
@@ -38,19 +38,24 @@ class Login extends React.Component{
     const { email, password } = this;
     return (
       <Container text>
-        <Header as='h2'>Login</Header>
-        <Input name="email" onChange={this.onChange}  value={email} fluid iconPosition='left' placeholder='Email' type="email">
-          <Icon name='at' />
-          <input />
-        </Input>
-        <Input name="password" onChange={this.onChange} value={password} fluid iconPosition='left' placeholder='Password' type="password">
-          <Icon name='privacy' />
-          <input />
-        </Input>
-        <Button icon onClick={this.onSubmit}>
-          <Icon name='sign in' />
-          Log In
-        </Button>
+        <Form>
+          <Header as='h2'>Login</Header>
+          <Form.Field>
+            <Input name="email" onChange={this.onChange}  value={email} fluid iconPosition='left' placeholder='Email' type="email">
+              <Icon name='at' />
+              <input />
+            </Input>
+          </Form.Field>
+          <Form.Field>
+            <Input name="password" onChange={this.onChange} value={password} fluid iconPosition='left' placeholder='Password' type="password">
+              <Icon name='privacy' />
+              <input />
+            </Input>
+          </Form.Field>
+          <Button icon onClick={this.onSubmit}>
+            <Icon name='sign in' /> Sign In
+          </Button>
+        </Form>
       </Container>
     )
   }

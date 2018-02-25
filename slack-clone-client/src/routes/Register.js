@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Header, Icon, Input, Button, Message } from 'semantic-ui-react';
+import { Container, Header, Icon, Input, Button, Message, Form } from 'semantic-ui-react';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
@@ -53,32 +53,39 @@ class Register extends React.Component{
     return (
       <Container text>
         <Header as='h2'>Register</Header>
-        <Input error={!!usernameError} name="username" onChange={this.onChange} value={username} fluid iconPosition='left' placeholder='Username'>
-          <Icon name='user' />
-          <input />
-        </Input>
-        <Input error={!!emailError} name="email" onChange={this.onChange}  value={email} fluid iconPosition='left' placeholder='Email' type="email">
-          <Icon name='at' />
-          <input />
-        </Input>
-        <Input error={!!passwordError} name="password" onChange={this.onChange} value={password} fluid iconPosition='left' placeholder='Password' type="password">
-          <Icon name='privacy' />
-          <input />
-        </Input>
-        <Button icon onClick={this.onSubmit}>
-          <Icon name='signup' />
-          Register
-        </Button>
-        {
-          (usernameError || emailError || passwordError) && (
-            <Message
-              error
-              header='There was some errors with your submission'
-              list={[usernameError, emailError, passwordError].filter(e => e)
-              }
-            />
-          )
-        }
+        <Form>
+          <Form.Field>
+            <Input error={!!usernameError} name="username" onChange={this.onChange} value={username} fluid iconPosition='left' placeholder='Username'>
+              <Icon name='user' />
+              <input />
+            </Input>
+          </Form.Field>
+          <Form.Field>
+            <Input error={!!emailError} name="email" onChange={this.onChange}  value={email} fluid iconPosition='left' placeholder='Email' type="email">
+              <Icon name='at' />
+              <input />
+            </Input>
+          </Form.Field>
+          <Form.Field>
+            <Input error={!!passwordError} name="password" onChange={this.onChange} value={password} fluid iconPosition='left' placeholder='Password' type="password">
+              <Icon name='privacy' />
+              <input />
+            </Input>
+          </Form.Field>
+          <Button icon onClick={this.onSubmit}>
+            <Icon name='signup' /> Register
+          </Button>
+          {
+            (usernameError || emailError || passwordError) && (
+              <Message
+                error
+                header='There was some errors with your submission'
+                list={[usernameError, emailError, passwordError].filter(e => e)
+                }
+              />
+            )
+          }
+        </Form>
       </Container>
     );
   }
