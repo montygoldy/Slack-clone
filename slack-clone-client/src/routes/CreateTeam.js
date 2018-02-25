@@ -16,16 +16,14 @@ class CreateTeam extends React.Component{
   }
 
   onSubmit = async () => {
-    const { email, password } = this;
+    const { name } = this;
     const res = await this.props.mutate({
-      variables: { email, password }
+      variables: { name }
     });
 
-    const { ok, refreshToken, token, errors } = res.data.login;
+    const { ok, errors } = res.data.createTeam;
 
     if(ok){
-      localStorage.setItem('token', token);
-      localStorage.setItem('refreshToken', refreshToken);
       this.props.history.push('/');
     } else{
       const err = {};
@@ -44,7 +42,7 @@ class CreateTeam extends React.Component{
   }
 
   render(){
-    const { name, errors: { emailError} } = this;
+    const { name, errors: { nameError} } = this;
     return (
       <Container text>
         <Form>
@@ -60,12 +58,11 @@ class CreateTeam extends React.Component{
           </Button>
         </Form>
         {
-          (nameError && (
+          nameError && (
             <Message
               error
               header='There was some errors with your submission'
-              list={[emailError, passwordError].filter(e => e)
-              }
+              list={[nameError]}
             />
           )
         }
@@ -75,12 +72,10 @@ class CreateTeam extends React.Component{
 };
 
 const createTeamMutation = gql`
-  mutation($email: String!, $password: String!){
-    login(email: $email, password: $password){
+  mutation($name: String!) {
+    createTeam(name: $name) {
       ok
-      token
-      refreshToken
-      errors{
+      errors {
         path
         message
       }
