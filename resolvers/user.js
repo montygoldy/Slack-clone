@@ -1,8 +1,7 @@
 import bcrypt from 'bcrypt';
 import _ from 'lodash';
-import { tryLogin } from '../auth';
 
-//For formatting the errors
+import { tryLogin } from '../auth';
 
 const formatErrors = (e, models) => {
   if (e instanceof models.sequelize.ValidationError) {
@@ -14,33 +13,26 @@ const formatErrors = (e, models) => {
 
 export default {
   Query: {
-    getUser: (parent, {id}, {models}) => models.User.findOne({ where: {id}}),
-    allUsers: (parent, args, {models}) => models.User.findAll(),
+    getUser: (parent, { id }, { models }) => models.User.findOne({ where: { id } }),
+    allUsers: (parent, args, { models }) => models.User.findAll(),
   },
   Mutation: {
-    login: (parent, { email, password }, {models, SECRET, SECRET2}) =>  tryLogin(email, password, models, SECRET),
+    login: (parent, { email, password }, { models, SECRET, SECRET2 }) =>
+      tryLogin(email, password, models, SECRET, SECRET2),
+    register: async (parent, args, { models }) => {
+      try {
+        const user = await models.User.create(args);
 
-    register: async (parent, {password, ...otherArgs}, {models}) => {
-      try{
-        if(password.length > 6 || password.lenght < 100){
-          const hashedPassword  = await bcrypt.hash(password, 12);
-          const user = await models.User.create({ ...otherArgs, password: hashedPassword });
-          return {
-            ok: true,
-            user,
-          }
-        } else{
-          return {
-            ok: false,
-            errors: [{path: 'password', message: 'Password needs to be 6 and 100 characters long'}]
-          }
-        }
-      } catch(err){
+        return {
+          ok: true,
+          user,
+        };
+      } catch (err) {
         return {
           ok: false,
-          errors: formatErrors(err, models)
-        }
+          errors: formatErrors(err, models),
+        };
       }
-    }
-  }
+    },
+  },
 };

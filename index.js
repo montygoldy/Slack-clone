@@ -41,6 +41,6 @@ app.use(graphqlEndpount, bodyParser.json(), graphqlExpress({ schema, context: {
 } }));
 app.use('/graphiql', graphiqlExpress({ endpointURL: graphqlEndpount }));
 // force: true in syn to drop the table
-models.sequelize.sync({}).then(() => {
+models.sequelize.sync().then(() => {
   app.listen(PORT);
 })
