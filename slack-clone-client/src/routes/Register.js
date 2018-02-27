@@ -17,6 +17,7 @@ class Register extends React.Component{
   }
 
   onSubmit = async (e) => {
+
     // reset the ui field
     this.setState({
       usernameError: '',

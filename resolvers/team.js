@@ -6,7 +6,7 @@ export default {
       try{
         await models.Team.create({ ...args, owner: user.id})
         return {
-          ok: true,
+          ok: true
         }
       } catch(err){
         console.log(err)

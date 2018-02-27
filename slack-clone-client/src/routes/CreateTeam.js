@@ -10,7 +10,7 @@ class CreateTeam extends React.Component{
     super(props);
 
     extendObservable(this, {
-      email: '',
+      name: '',
       errors: {}
     });
   }
@@ -58,7 +58,7 @@ class CreateTeam extends React.Component{
           </Button>
         </Form>
         {
-          nameError && (
+          (nameError) && (
             <Message
               error
               header='There was some errors with your submission'
