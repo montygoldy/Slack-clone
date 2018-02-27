@@ -6,6 +6,7 @@
     "apollo-cache-inmemory": "^1.1.9",
     "apollo-client": "^2.2.5",
     "apollo-link-http": "^1.5.1",
+    "components": "^0.1.0",
     "graphql": "^0.12",
     "graphql-tag": "^2.8.0",
     "jwt-decode": "^2.2.0",
@@ -14,7 +15,9 @@
     "react-dom": "^16.2.0",
     "react-scripts": "1.1.1",
     "semantic-ui-css": "^2.3.0",
-    "semantic-ui-react": "^0.78.2"
+    "semantic-ui-react": "^0.78.2",
+    "styled": "^1.0.0",
+    "styled-components": "^3.1.6"
   },
   "scripts": {
     "start": "react-scripts start",
