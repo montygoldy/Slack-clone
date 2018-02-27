@@ -6,17 +6,14 @@ export default `
     members: [User!]!
     channels: [Channel!]!
   }
-
   type CreateTeamResponse {
     ok: Boolean!
     errors: [Error!]
   }
-
   type Query {
     allTeams: [Team!]!
   }
-
-  type Mutation{
+  type Mutation {
     createTeam(name: String!): CreateTeamResponse!
   }
-  `;
+`;
