@@ -1,5 +1,5 @@
 import formatErrors from '../FormatErrors';
-import { requiresAuth } from '../permissions';
+import requiresAuth from '../permissions';
 export default {
   Mutation: {
     createTeam: requiresAuth.createResolver(async (parent, args, {models, user}) => {
