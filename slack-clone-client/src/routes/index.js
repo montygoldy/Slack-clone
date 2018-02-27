@@ -7,8 +7,9 @@ import CreateTeam from './CreateTeam';
 import decode from 'jwt-decode';
 
 const isAuthenticated = () => {
-  const token = localStorage.getItem('token', token);
-  const refreshToken = localStorage.getItem('refreshToken', refreshToken);
+  const token = localStorage.getItem('token');
+  const refreshToken = localStorage.getItem('refreshToken');
+
   try{
     decode(token);
     decode(refreshToken);
@@ -23,7 +24,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
     render={props =>
-      (isAuthenticated() ? (
+      isAuthenticated() ? (
         <Component {...props} />
       ) : (
         <Redirect
