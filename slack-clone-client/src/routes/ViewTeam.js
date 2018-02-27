@@ -9,7 +9,12 @@ import AppLayout from '../components/AppLayout';
 export default () => (
   <AppLayout>
     <Teams>Teams</Teams>
-    <Channels>Channels</Channels>
+    <Channels
+      teamName="Team Name"
+      username="Username"
+      channels={[{id: 1, name: "General"}, {id:2, name: "Reandom"}]}
+      users={[{id: 1, name: "slackbot"}, {id: 2, name: "User 1"}]}
+    />
     <Header>Header</Header>
     <Messages>
       <ul className="message-list">
