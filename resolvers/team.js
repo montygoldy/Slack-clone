@@ -10,7 +10,7 @@ export default {
     createTeam: requiresAuth.createResolver(async (parent, args, { models, user }) => {
       try {
         const team = await models.Team.create({ ...args, owner: user.id });
-        await models.Channel.create({ name: 'general', public: true, teamId: team.id })
+        await models.Channel.bulkCreate([{ name: 'general', public: true, teamId: team.id }, { name: 'random', public: true, teamId: team.id}])
         return {
           ok: true,
           team,
