@@ -12,6 +12,7 @@ const Sidebar = ({ data: { loading, allTeams }, currentTeamId }) => {
   }
 
   const team = allTeams.filter(team => team.id === currentTeamId)[0];﻿
+
   let username = '';
   try {
     const token = localStorage.getItem('token');
@@ -25,7 +26,7 @@ const Sidebar = ({ data: { loading, allTeams }, currentTeamId }) => {
       key="team-sidebar"
       teams={allTeams.map(t => ({
         id: t.id,
-        letter: t.name.charAt(0).toUpperCase(),
+        initial: t.name.charAt(0).toUpperCase(),
       }))}
     />,
     <Channels
