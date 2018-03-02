@@ -29,13 +29,13 @@ const createChannelMutation = gql`
 `;
 
 export default compose(
-  graphql(),
+  graphql(createChannelMutation),
   withFormik({
     mapPropsToValues: props => ({ name: '' }),
 
-    handleSubmit: (values, { props, setSubmitting }) => {
-      console.log(values);
-      console.log("submitting.....");
+    handleSubmit: async (values, { props: { onClose, teamId, mutate }, setSubmitting }) => {
+      await mutate({variables: { teamId, name: values.name } })
+      onClose();
       setSubmitting(false);
     },
   })
