@@ -1,5 +1,4 @@
 import React from 'react';
-import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import decode from 'jwt-decode';
 import findIndex from 'lodash/findIndex';

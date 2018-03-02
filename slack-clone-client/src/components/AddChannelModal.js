@@ -25,7 +25,13 @@ const AddChannelModal = ({open, onClose, values, handleChange, handleBlur, handl
 
 const createChannelMutation = gql`
   mutation($teamId: Int!, $name: String!){
-    createChannel(teamId: $teamId, name: $name)
+    createChannel(teamId: $teamId, name: $name){
+      ok
+      channel {
+        id
+        name
+      }
+    }
   }
 `;
 
@@ -37,10 +43,15 @@ export default compose(
     handleSubmit: async (values, { props: { onClose, teamId, mutate }, setSubmitting }) => {
       await mutate({
         variables: { teamId, name: values.name },
-        update(store, { data: {submitComment} }) => {
+        update: (store, { data: { createChannel } }) => {
+          const { ok, channel } = createChannel;
+          if(!ok){
+            return;
+          }
           const data = store.readQuery({ query: allTeamsQuery });
-          data.channels.push(submitComment);
-          store.writeQuery({ query: CommentAppQuery, data });
+          console.log(data);
+          data.channels.push(channel);
+          store.writeQuery({ query: allTeamsQuery, data });
         }
       })
       onClose();
