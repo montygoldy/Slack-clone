@@ -1,3 +1,5 @@
-.visible.transition{
-  display:normal!important;
+.modal{
+  margin-top:250px!important;
+  margin-left: 350px!important;
+  max-width:600px!important;
 }
