@@ -4,6 +4,7 @@ import '../style.css';
 import { withFormik } from 'formik';
 import gql from 'graphql-tag';
 import { compose, graphql } from 'react-apollo';
+import { allTeamsQuery } from '../graphql/team';
 
 const AddChannelModal = ({open, onClose, values, handleChange, handleBlur, handleSubmit, isSubmitting,}) => (
   <Modal open={open} onClose={onClose}>
@@ -34,7 +35,14 @@ export default compose(
     mapPropsToValues: props => ({ name: '' }),
 
     handleSubmit: async (values, { props: { onClose, teamId, mutate }, setSubmitting }) => {
-      await mutate({variables: { teamId, name: values.name } })
+      await mutate({
+        variables: { teamId, name: values.name },
+        update(store, { data: {submitComment} }) => {
+          const data = store.readQuery({ query: allTeamsQuery });
+          data.channels.push(submitComment);
+          store.writeQuery({ query: CommentAppQuery, data });
+        }
+      })
       onClose();
       setSubmitting(false);
     },

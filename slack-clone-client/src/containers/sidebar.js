@@ -6,6 +6,7 @@ import findIndex from 'lodash/findIndex';
 import AddChannelModal from '../components/AddChannelModal';
 import Channels from '../components/Channels';
 import Teams from '../components/Teams';
+import { allTeamsQuery } from '../graphql/team';
 
 class Sidebar extends React.Component{
   state = {
@@ -67,17 +68,6 @@ class Sidebar extends React.Component{
   }
 }
 
-const allTeamsQuery = gql`
-  {
-    allTeams {
-      id
-      name
-      channels {
-        id
-        name
-      }
-    }
-  }
-`;
+
 
 export default graphql(allTeamsQuery)(Sidebar);
