@@ -8,16 +8,17 @@ import Sidebar from '../containers/sidebar';
 import { allTeamsQuery } from '../graphql/team';
 import findIndex from 'lodash/findIndex';
 
-const ViewTeam = ({ data: { loading, allTeams}, match: { params: { teamId } } }) => {
+const ViewTeam = ({ data: { loading, allTeams}, match: { params: { teamId, channelId } } }) => {
 
   if(loading){
     return null;
   }
 
-  const teamIdx = teamId ? findIndex(allTeams, ['id', parseInt(teamId, 10)]) : 0;
+  const teamIdx = !!teamId ? findIndex(allTeams, ['id', parseInt(teamId, 10)]) : 0;
   const team = allTeams[teamIdx];
-
-  return (
+  const channelIdx = !!channelId ? findIndex(team.channels, ['id', parseInt(channelId, 10)]) : 0;
+  const channel = team.channels[channelIdx];
+   return (
     <AppLayout>
       <Sidebar teams={allTeams.map(t => ({
           id: t.id,
@@ -31,7 +32,7 @@ const ViewTeam = ({ data: { loading, allTeams}, match: { params: { teamId } } })
           <li />
         </ul>
       </Messages>
-      <SendMessage channelName="general" />
+      <SendMessage channelName={channel.name} />
     </AppLayout>
   );
 }
