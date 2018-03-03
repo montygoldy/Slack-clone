@@ -9,6 +9,6 @@ const HeaderWrapper = styled.div`
 
 export default ({ channelName }) => (
   <HeaderWrapper>
-    <Header textAlign="center"># Channel Name</Header>
+    <Header textAlign="center">{channelName}</Header>
   </HeaderWrapper>
 );
