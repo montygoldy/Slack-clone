@@ -4,10 +4,10 @@ import '../style.css';
 import { withFormik } from 'formik';
 import gql from 'graphql-tag';
 import { compose, graphql } from 'react-apollo';
+import normalizeErrors from '../normalizeErrors';
 
 
-
-const InvitePeopleModal = ({open, onClose, values, handleChange, handleBlur, handleSubmit, isSubmitting,}) => (
+const InvitePeopleModal = ({open, onClose, values, handleChange, handleBlur, handleSubmit, isSubmitting, touched, errors}) => (
   <Modal open={open} onClose={onClose}>
     <Modal.Header>Add People to your Team</Modal.Header>
     <Modal.Content>
@@ -19,6 +19,9 @@ const InvitePeopleModal = ({open, onClose, values, handleChange, handleBlur, han
           <Button fluid disabled={isSubmitting} onClick={handleSubmit} >Add User</Button>
           <Button fluid disabled={isSubmitting} onClick={onClose} >Cancel</Button>
         </Form.Group>
+        {
+          touched.email && errors.email ? errors.email[0] : null
+        }
       </Form>
     </Modal.Content>
   </Modal>
@@ -51,7 +54,8 @@ export default compose(
         onClose();
         setSubmitting(false);
       }else{
-
+        setSubmitting(false);
+        setErrors(normalizeErrors(errors));
       }
     },
   })
