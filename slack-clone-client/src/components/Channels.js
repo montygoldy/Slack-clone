@@ -43,10 +43,10 @@ const PushLeft = styled.div`${paddingLeft};`;
 const Green = styled.span`color: #38978d;`;
 
 const Bubble = ({ on = true }) => (on ? <Green>●</Green> : '○');
-const channel = ({ id, name }, teamId) => <Link to={`/view-team/${teamId}/${id}`} key={`channel-${id}`} ><SideBarListItem ># {name}</SideBarListItem></Link>;
+const channel = ({ id, name }, teamId) => <SideBarListItem key={`channel-${id}`} ><Link to={`/view-team/${teamId}/${id}`} ># {name}</Link></SideBarListItem>;
 const user = ({ id, name }) => <SideBarListItem key={`user-${id}`}> <Bubble /> {name}</SideBarListItem>;
 
-export default ({ teamName, username, channels, users, onAddChannelClick, teamId }) => (
+export default ({ teamName, username, channels, users, onAddChannelClick, teamId, onInvitePeopleClick }) => (
   <ChannelWrapper>
     <PushLeft>
       <TeamNameHeader>{teamName}</TeamNameHeader>
@@ -67,6 +67,11 @@ export default ({ teamName, username, channels, users, onAddChannelClick, teamId
           users.map(user)
         }
       </SideBarList>
+    </div>
+    <div>
+      <a href="#invite-people" onClick={onInvitePeopleClick} >
+        + Invite People
+      </a>
     </div>
   </ChannelWrapper>
 );

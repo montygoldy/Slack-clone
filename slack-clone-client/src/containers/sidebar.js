@@ -3,10 +3,12 @@ import decode from 'jwt-decode';
 import AddChannelModal from '../components/AddChannelModal';
 import Channels from '../components/Channels';
 import Teams from '../components/Teams';
+import InvitePeopleModal from '../components/InvitePeopleModal';
 
 class Sidebar extends React.Component{
   state = {
-    openAddChannelModal: false
+    openAddChannelModal: false,
+    openInvitePeopleModal: false
   }
 
   handleCloseChannelModal= () => (
@@ -20,6 +22,12 @@ class Sidebar extends React.Component{
       openAddChannelModal: true
     })
   )
+
+  handleInvitePeopleClick = () => {
+    this.setState({
+      openInvitePeopleModal: !this.state.openInvitePeopleModal
+    })
+  }
 
   render(){
     const { teams, team} = this.props
@@ -45,6 +53,7 @@ class Sidebar extends React.Component{
         channels={team.channels}
         users={[{ id: 1, name: 'slackbot' }, { id: 2, name: 'user1' }]}
         onAddChannelClick={this.handleAddChannelClick}
+        onInvitePeopleClick={this.handleInvitePeopleClick}
       />,
       <AddChannelModal
         teamId={team.id}
