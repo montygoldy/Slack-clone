@@ -7,16 +7,16 @@ import { compose, graphql } from 'react-apollo';
 
 
 
-const AddChannelModal = ({open, onClose, values, handleChange, handleBlur, handleSubmit, isSubmitting,}) => (
+const InvitePeopleModal = ({open, onClose, values, handleChange, handleBlur, handleSubmit, isSubmitting,}) => (
   <Modal open={open} onClose={onClose}>
-    <Modal.Header>Add Channel</Modal.Header>
+    <Modal.Header>Add People to your Team</Modal.Header>
     <Modal.Content>
       <Form>
         <Form.Field>
-          <Input value={values.name} onChange={handleChange} onBlur={handleBlur} name="name" fluid placeholder="Channel Name"/>
+          <Input value={values.email} onChange={handleChange} onBlur={handleBlur} name="email" fluid placeholder="User's email"/>
         </Form.Field>
         <Form.Group widths="equal" >
-          <Button fluid disabled={isSubmitting} onClick={handleSubmit} >Create Channel</Button>
+          <Button fluid disabled={isSubmitting} onClick={handleSubmit} >Add User</Button>
           <Button fluid disabled={isSubmitting} onClick={onClose} >Cancel</Button>
         </Form.Group>
       </Form>
@@ -24,41 +24,36 @@ const AddChannelModal = ({open, onClose, values, handleChange, handleBlur, handl
   </Modal>
 )
 
-const createChannelMutation = gql`
-  mutation($teamId: Int!, $name: String!){
-    createChannel(teamId: $teamId, name: $name){
+const addTeamMemberMutation = gql`
+  mutation($email: String!, $teamId: Int!){
+    addTeamMember(email: $email, teamId: $teamId){
       ok
-      channel {
-        id
-        name
+      errors{
+        path
+        message
       }
     }
   }
 `;
 
 export default compose(
-  graphql(createChannelMutation),
+  graphql(addTeamMemberMutation),
   withFormik({
-    mapPropsToValues: props => ({ name: '' }),
+    mapPropsToValues: props => ({ email: '' }),
 
-    handleSubmit: async (values, { props: { onClose, teamId, mutate }, setSubmitting }) => {
-      await mutate({
-        variables: { teamId, name: values.name },
-        optimisticResponse: {
-          createChannel: {
-            __typename: 'Mutation',
-            ok: true,
-            channel: {
-              __typename: 'Channel',
-              id: -1,
-              name: values.name
-            }
-          }
-        }
+    handleSubmit: async (values, { props: { onClose, teamId, mutate }, setSubmitting, setErrors }) => {
+      const response = await mutate({
+        variables: { teamId, email: values.email }
       })
-      onClose();
-      setSubmitting(false);
+
+      const { ok, errors } = response.data.addTeamMember;
+      if(ok){
+        onClose();
+        setSubmitting(false);
+      }else{
+
+      }
     },
   })
-)(AddChannelModal);
+)(InvitePeopleModal);
 
