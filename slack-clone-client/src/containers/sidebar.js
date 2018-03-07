@@ -12,7 +12,9 @@ class Sidebar extends React.Component{
   }
 
   toggleAddChannelModal = (e) => {
-    e.preventDefault();
+    if(e){
+      e.preventDefault();
+    }
     this.setState(
       state => ({openAddChannelModal: !state.openAddChannelModal})
     )
@@ -20,7 +22,9 @@ class Sidebar extends React.Component{
 
 
   toggleInvitePeopleModal = (e) => {
-    e.preventDefault();
+    if(e){
+      e.preventDefault();
+    }
     this.setState(
       state => ({ openInvitePeopleModal: !state.openInvitePeopleModal })
     )
