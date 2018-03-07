@@ -45,7 +45,7 @@ export default {
             await models.Channel.bulkCreate([{ name: 'general', public: true, teamId: team.id }, { name: 'random', public: true, teamId: team.id}])
             return team;
           }
-        )
+        );
         return {
           ok: true,
           team: response,
