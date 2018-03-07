@@ -48,7 +48,6 @@ export default compose(
       const response = await mutate({
         variables: { teamId, email: values.email }
       })
-
       const { ok, errors } = response.data.addTeamMember;
       if(ok){
         onClose();
