@@ -32,7 +32,7 @@ export default {
         console.log(err);
         return {
           ok: false,
-          errors: formatErrors(err),
+          errors: formatErrors(err, models),
         };
       }
     }),
@@ -54,7 +54,7 @@ export default {
         console.log(err);
         return {
           ok: false,
-          errors: formatErrors(err),
+          errors: formatErrors(err, models),
         };
       }
     }),
