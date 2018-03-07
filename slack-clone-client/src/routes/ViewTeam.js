@@ -7,6 +7,7 @@ import AppLayout from '../components/AppLayout';
 import Sidebar from '../containers/sidebar';
 import { allTeamsQuery } from '../graphql/team';
 import findIndex from 'lodash/findIndex';
+import { Redirect } from 'react-router-dom';
 
 const ViewTeam = ({ data: { loading, allTeams}, match: { params: { teamId, channelId } } }) => {
 
@@ -14,9 +15,16 @@ const ViewTeam = ({ data: { loading, allTeams}, match: { params: { teamId, chann
     return null;
   }
 
-  const teamIdx = !!teamId ? findIndex(allTeams, ['id', parseInt(teamId, 10)]) : 0;
+  if(!allTeams.length){
+    return (<Redirect to="/create-team" />);
+  }
+
+  let teamIdInteger = parseInt(teamId, 10);
+  const teamIdx = teamIdInteger ? findIndex(allTeams, ['id', teamIdInteger]) : 0;
   const team = allTeams[teamIdx];
-  const channelIdx = !!channelId ? findIndex(team.channels, ['id', parseInt(channelId, 10)]) : 0;
+
+  let channelIdInteger = parseInt(channelId, 10);
+  const channelIdx = channelIdInteger ? findIndex(team.channels, ['id', channelIdInteger]) : 0;
   const channel = team.channels[channelIdx];
    return (
     <AppLayout>
