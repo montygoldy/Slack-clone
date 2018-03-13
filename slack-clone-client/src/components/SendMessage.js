@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { Input } from 'semantic-ui-react';
 import { withFormik } from 'formik';
+import gql from 'graphql-tag';
+import { compose, graphql } from 'react-apollo';
 
 const InputWrapper =  styled.div`
   grid-column: 3;
@@ -30,38 +32,25 @@ const SendMessage = ({ values, handleChange, handleBlur, handleSubmit, isSubmitt
   </InputWrapper>
 );
 
-export default withFormik({
-  mapPropsToValues: props => ({ name: '' }),
+const createMessageMutation = gql`
+  mutation($channelId: Int!, $text: String!){
+    createMessage(channelId: $channelId, text: $text)
+  }
+`;
 
-  handleSubmit: async (values, { props: { onClose, teamId, mutate }, setSubmitting }) => {
+export default compose(
+  graphql(createMessageMutation),
+  withFormik({
+  mapPropsToValues: props => ({ message: '' }),
+
+  handleSubmit: async (values, { props: { channelId, mutate }, setSubmitting, resetForm }) => {
+    if(!values.message || !values.message.trim()){
+      setSubmitting(false);
+      return;
+    }
     await mutate({
-      variables: { teamId, name: values.name },
-      optimisticResponse: {
-        createChannel: {
-          __typename: 'Mutation',
-          ok: true,
-          channel: {
-            __typename: 'Channel',
-            id: -1,
-            name: values.name
-          }
-        }
-      },
-      update: (store, { data: { createChannel } }) => {
-        const { ok, channel } = createChannel;
-        console.log(createChannel);
-        if(!ok){
-          return;
-        }
-
-        const data = store.readQuery({ query: allTeamsQuery });
-        const teamIdx = findIndex(data.allTeams, ['id', teamId]);
-        console.log(data);
-        data.allTeams[teamIdx].channels.push(channel);
-        store.writeQuery({ query: allTeamsQuery, data });
-      }
+      variables: { channelId, text: values.message },
     })
-    onClose();
-    setSubmitting(false);
+    resetForm(false);
   },
-})(SendMessage);
+}))(SendMessage);
