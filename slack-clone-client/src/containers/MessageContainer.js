@@ -3,16 +3,13 @@ import Messages from '../components/Messages';
 import gql from'graphql-tag';
 import { graphql } from 'react-apollo';
 
-const MessageContainer = ({ channelId }) => (
+const MessageContainer = ({ data: { loading, messages } }) => loading ? null : (
   <Messages>
-    <ul className="message-list">
-      <li />
-      <li />
-    </ul>
+    {JSON.stringify(messages)}
   </Messages>
 );
 
-const messageQuery = gql `
+const messagesQuery = gql `
   query($channelId: Int!){
     messages(channelId: $channelId){
       id
@@ -25,4 +22,8 @@ const messageQuery = gql `
   }
 `;
 
-export default graphql(messageQuery)(MessageContainer);
+export default graphql(messagesQuery, {
+  variables: props => ({
+    channelId: props.channelId
+  })
+})(MessageContainer);
