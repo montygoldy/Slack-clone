@@ -8,6 +8,10 @@ import { fileLoader, mergeTypes, mergeResolvers } from 'merge-graphql-schemas';
 import cors from 'cors';
 import models from './models';
 import { refreshTokens } from './auth';
+import { createServer } from 'http';
+import { execute, subscribe } from 'graphql';
+import { PubSub } from 'graphql-subscriptions';
+import { SubscriptionServer } from 'subscriptions-transport-ws';
 
 // Secret for hwt tokens
 
@@ -65,7 +69,31 @@ app.use(graphqlEndpount, bodyParser.json(), graphqlExpress(req => ({ schema, con
 } }))
 );
 app.use('/graphiql', graphiqlExpress({ endpointURL: graphqlEndpount }));
+
+// Express graphql subscription server
+
+const server = createServer(app);
+
 // force: true in syn to drop the table
 models.sequelize.sync().then(() => {
-  app.listen(PORT);
+  server.listen(PORT, () => {
+    new SubscriptionServer({
+      execute,
+      subscribe,
+      schema,
+    }, {
+      server: server,
+      path: '/subscriptions',
+    });
+});
 })
+
+
+
+
+
+
+
+
+
+
