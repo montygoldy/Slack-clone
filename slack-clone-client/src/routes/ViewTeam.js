@@ -1,13 +1,13 @@
 import React from 'react';
 import { graphql } from 'react-apollo';
 import Header from '../components/Header';
-import Messages from '../components/Messages';
 import SendMessage from '../components/SendMessage';
 import AppLayout from '../components/AppLayout';
 import Sidebar from '../containers/sidebar';
 import { allTeamsQuery } from '../graphql/team';
 import findIndex from 'lodash/findIndex';
 import { Redirect } from 'react-router-dom';
+import MessageContainer from '../containers/MessageContainer';
 
 const ViewTeam = ({ data: { loading, allTeams, inviteTeams}, match: { params: { teamId, channelId } } }) => {
 
@@ -36,12 +36,7 @@ const ViewTeam = ({ data: { loading, allTeams, inviteTeams}, match: { params: { 
         }))}
         team={team} />
       { channel  && <Header channelName={channel.name} /> }
-      { channel  && <Messages channelId={channel.id} >
-        <ul className="message-list">
-          <li />
-          <li />
-        </ul>
-      </Messages> }
+      { channel  && <MessageContainer channelId={channel.id} /> }
       { channel  && <SendMessage channelName={channel.name} channelId={channel.id} /> }
     </AppLayout>
   );
