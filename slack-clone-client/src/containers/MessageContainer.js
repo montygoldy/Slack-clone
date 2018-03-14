@@ -19,12 +19,21 @@ const newChannelMesageSubscription = gql`
 
 class MessageContainer extends React.Component {
   componentWillMount(){
-    this.subscribe(this.rops.channelId);
+    this.unsubscribe = this.subscribe(this.rops.channelId);
   }
 
   componentWillReceiveProps({ channelId }){
     if(this.props.channelId !== channelId){
-      this.subscribe(channelId);
+      if(this.unsubscribe){
+        this.unsubscribe();
+      }
+      this.unsubscribe = this.subscribe(channelId);
+    }
+  }
+
+  componentWillUnmount(){
+    if(this.unsubscribe){
+      this.unsubscribe();
     }
   }
 
@@ -44,7 +53,6 @@ class MessageContainer extends React.Component {
         }
       }
     });
-
 
   render(){
     const { data: { loading, messages } } = this.props;
