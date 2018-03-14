@@ -3,11 +3,13 @@ import { PubSub, withFilter } from 'graphql-subscriptions';
 
 const pubsub = new PubSub()
 
+const NEW_CHANNEL_MESSAGE = 'NEW_CHANNEL_MESSAGE';
+
 export default {
   Subscription: {
-    commentAdded: {
-      subscribe: withFilter(() => pubsub.asyncIterator('commentAdded'), (payload, variables) => {
-         return payload.commentAdded.repository_name === variables.repoFullName;
+    newChannelMessage: {
+      subscribe: withFilter(() => pubsub.asyncIterator(NEW_CHANNEL_MESSAGE), (payload, args) => {
+         return payload.channelId === args.channelId;
       }),
     }
   },
@@ -21,7 +23,8 @@ export default {
   Mutation: {
     createMessage: requiresAuth.createResolver(async (parent, args, {models, user}) => {
       try{
-        await models.Message.create({ ...args, userId: user.id });
+        const message = await models.Message.create({ ...args, userId: user.id });
+        pubsub.publish(NEW_CHANNEL_MESSAGE, { channelId: args.channenlId, newChannelMessage: message.dataValues});
         return true;
       } catch(err){
         console.log(err);
