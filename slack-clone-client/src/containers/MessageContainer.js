@@ -19,7 +19,7 @@ const newChannelMesageSubscription = gql`
 
 class MessageContainer extends React.Component {
   componentWillMount(){
-    this.unsubscribe = this.subscribe(this.rops.channelId);
+    this.unsubscribe = this.subscribe(this.props.channelId);
   }
 
   componentWillReceiveProps({ channelId }){
@@ -94,5 +94,8 @@ const messagesQuery = gql `
 export default graphql(messagesQuery, {
   variables: props => ({
     channelId: props.channelId
-  })
+  }),
+  options: {
+    fetchPolicy: 'network-only'
+  }
 })(MessageContainer);
