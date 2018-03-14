@@ -1,6 +1,16 @@
 import requiresAuth from '../permissions';
+import { PubSub, withFilter } from 'graphql-subscriptions';
+
+const pubsub = new PubSub()
 
 export default {
+  Subscription: {
+    commentAdded: {
+      subscribe: withFilter(() => pubsub.asyncIterator('commentAdded'), (payload, variables) => {
+         return payload.commentAdded.repository_name === variables.repoFullName;
+      }),
+    }
+  },
   Message: {
     user: ({ userId }, args, { models }) => models.User.findOne({ where: {id: userId} }),
   },
