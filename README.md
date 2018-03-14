@@ -5,7 +5,7 @@ A practise full length project made with modern javascript like ReactJS, NodeJs,
 
 ### Screenshot
 
-!["Screenshot of slack messages"]()
+!["Screenshot of slack messages"](https://github.com/montygoldy/Slack-clone/blob/master/docs/Screen%20Shot%202018-03-13%20at%2011.41.48%20PM.png?raw=true)
 
 ### Project Description
 
